@@ -1,4 +1,3 @@
-import { TelemetryPanel } from "./TelemetryPanel";
 import { ModeSelector } from "./ModeSelector";
 
 interface TopbarProps {
@@ -45,11 +44,6 @@ export const Topbar = ({
         </button>
       </div>
 
-      {/* Center: Telemetry Panel */}
-      <div className="pointer-events-auto flex flex-col items-center gap-4">
-        <TelemetryPanel />
-      </div>
-
       {/* Right: Mode Selector */}
       <div className="pointer-events-auto">
         <ModeSelector mode={mode} onModeChange={onModeChange} />
@@ -57,3 +51,4 @@ export const Topbar = ({
     </header>
   );
 };
+

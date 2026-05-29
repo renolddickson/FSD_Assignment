@@ -5,6 +5,7 @@ import { PipWindow } from "./PipWindow";
 import { EmergencyStop } from "./EmergencyStop";
 import { DpadController } from "./DpadController";
 import { ViewToggle } from "./ViewToggle";
+import { TelemetryPanel } from "./TelemetryPanel";
 import heroImg from "../assets/hero.png";
 
 export const MainViewport = () => {
@@ -186,6 +187,9 @@ export const MainViewport = () => {
         isMissionPaused={isMissionPaused}
         onPauseToggle={() => setIsMissionPaused((prev) => !prev)}
       />
+
+      {/* 1.5. Pressed Top Telemetry Panel */}
+      <TelemetryPanel />
 
       {/* 2. Floating View Toggle Bar */}
       <div className="absolute top-24 left-1/2 -translate-x-1/2 z-40 pointer-events-auto">

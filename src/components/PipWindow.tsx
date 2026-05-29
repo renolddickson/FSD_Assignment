@@ -72,12 +72,14 @@ export const PipWindow = ({
           {renderViewContent(inactiveView, true)}
         </div>
 
-        {/* HUD Dark Glass Overlay on Hover */}
-        <div className="absolute inset-0 bg-[#040814]/40 group-hover:bg-[#040814]/60 flex items-center justify-center transition-all duration-300">
-          <div className="px-3 py-1.5 rounded-lg bg-[#090D1A]/90 border border-slate-800/40 text-[10px] font-black text-slate-200 tracking-wider uppercase opacity-0 group-hover:opacity-100 transition-opacity duration-300 shadow-xl">
-            Click to swap views
+        {/* HUD Translucent Overlay Banner (Only when map is in PiP, matching screenshots exactly) */}
+        {inactiveView === "map" && (
+          <div className="absolute inset-0 flex items-center justify-center bg-slate-900/10">
+            <div className="px-4 py-2 rounded-lg bg-[#090D1A]/85 border border-slate-700/40 text-[10px] font-semibold text-slate-200 tracking-wide select-none shadow-2xl">
+              Click to enter camera view
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );

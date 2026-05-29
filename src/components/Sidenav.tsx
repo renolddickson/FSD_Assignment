@@ -88,7 +88,7 @@ export const Sidenav = () => {
       </div>
 
       {/* Middle Section: Navigation Icons */}
-      <nav className="flex flex-col gap-6 w-full px-2">
+      <nav className="flex flex-col gap-8 w-full">
         {navItems.map((item) => {
           const isActive = activeTab === item.id;
           return (
@@ -96,18 +96,11 @@ export const Sidenav = () => {
               key={item.id}
               onClick={() => setActiveTab(item.id)}
               title={item.label}
-              className={`relative flex items-center justify-center w-12 h-12 mx-auto rounded-xl transition-all duration-300 group cursor-pointer ${
-                isActive
-                  ? "bg-[#1E293B]/60 text-white shadow-md shadow-sky-500/5"
-                  : "text-slate-500 hover:text-slate-300 hover:bg-[#0F172A]/40"
+              className={`relative flex items-center justify-center w-12 h-12 mx-auto transition-all duration-300 group cursor-pointer ${
+                isActive ? "text-white" : "text-[#4F5B73] hover:text-slate-200"
               }`}
             >
-              {/* Left active line indicator */}
-              {isActive && (
-                <span className="absolute left-0 w-[3px] h-6 bg-sky-500 rounded-r-md transition-all duration-300" />
-              )}
-              
-              <div className={`transition-transform duration-300 ${isActive ? "scale-105" : "group-hover:scale-105"}`}>
+              <div className="transition-transform duration-300 group-hover:scale-105">
                 {item.icon}
               </div>
 
@@ -121,7 +114,7 @@ export const Sidenav = () => {
       </nav>
 
       {/* Bottom Section: User Profile */}
-      <div className="group relative flex items-center justify-center w-12 h-12 rounded-xl text-slate-500 hover:text-slate-300 hover:bg-[#0F172A]/40 transition-all duration-300 cursor-pointer">
+      <div className="group relative flex items-center justify-center w-12 h-12 text-[#4F5B73] hover:text-slate-200 transition-all duration-300 cursor-pointer">
         <svg className="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
           <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
           <circle cx="12" cy="7" r="4" />
