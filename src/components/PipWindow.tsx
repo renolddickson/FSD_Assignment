@@ -1,3 +1,5 @@
+import { useRef } from "react";
+
 interface PipWindowProps {
   inactiveView: "camera" | "map";
   onSwapView: () => void;
@@ -13,12 +15,56 @@ export const PipWindow = ({
   onZoomChange,
   renderViewContent,
 }: PipWindowProps) => {
+  const trackRef = useRef<HTMLDivElement>(null);
+
   const handleZoomIn = () => {
     onZoomChange(Math.min(5, zoom + 0.5));
   };
 
   const handleZoomOut = () => {
     onZoomChange(Math.max(1, zoom - 0.5));
+  };
+
+  // Maps vertical slider offsets directly to lens zoom level (1x - 5x)
+  const handleTrackInteraction = (clientY: number) => {
+    if (!trackRef.current) return;
+    const rect = trackRef.current.getBoundingClientRect();
+    const y = rect.bottom - clientY;
+    const ratio = Math.max(0, Math.min(1, y / rect.height));
+    const newZoom = 1 + ratio * 4;
+    onZoomChange(Math.round(newZoom * 10) / 10);
+  };
+
+  const handleMouseDown = (e: React.MouseEvent) => {
+    handleTrackInteraction(e.clientY);
+
+    const handleMouseMove = (moveEvent: MouseEvent) => {
+      handleTrackInteraction(moveEvent.clientY);
+    };
+
+    const handleMouseUp = () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("mouseup", handleMouseUp);
+    };
+
+    window.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener("mouseup", handleMouseUp);
+  };
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    handleTrackInteraction(e.touches[0].clientY);
+
+    const handleTouchMove = (moveEvent: TouchEvent) => {
+      handleTrackInteraction(moveEvent.touches[0].clientY);
+    };
+
+    const handleTouchEnd = () => {
+      window.removeEventListener("touchmove", handleTouchMove);
+      window.removeEventListener("touchend", handleTouchEnd);
+    };
+
+    window.addEventListener("touchmove", handleTouchMove, { passive: true });
+    window.addEventListener("touchend", handleTouchEnd);
   };
 
   return (
@@ -34,20 +80,25 @@ export const PipWindow = ({
           +
         </button>
 
-        {/* Vertical Track / Thumb */}
-        <div className="relative flex-1 w-1 flex items-center justify-center">
-          {/* Track background */}
-          <div className="absolute w-[2px] h-full bg-slate-800 rounded-full" />
+        {/* Vertical Track / Thumb with Interactive Drag Listeners */}
+        <div
+          ref={trackRef}
+          onMouseDown={handleMouseDown}
+          onTouchStart={handleTouchStart}
+          className="relative flex-1 w-4 flex items-center justify-center cursor-ns-resize"
+        >
+          {/* Visual thin track line */}
+          <div className="absolute w-[2px] h-full bg-slate-800 rounded-full pointer-events-none" />
           
           {/* Dynamic Fill Bar */}
           <div
-            className="absolute w-[2px] bg-sky-500 rounded-full bottom-0"
+            className="absolute w-[2px] bg-sky-500 rounded-full bottom-0 pointer-events-none"
             style={{ height: `${((zoom - 1) / 4) * 100}%` }}
           />
 
           {/* Slider Thumb */}
           <div
-            className="absolute w-2.5 h-2.5 bg-white rounded-full shadow-md shadow-sky-500/20 border border-sky-500 transition-all"
+            className="absolute w-2.5 h-2.5 bg-white rounded-full shadow-md shadow-sky-500/20 border border-sky-500 pointer-events-none"
             style={{ bottom: `calc(${((zoom - 1) / 4) * 100}% - 5px)` }}
           />
         </div>

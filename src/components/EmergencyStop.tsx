@@ -3,59 +3,115 @@ interface EmergencyStopProps {
   isTriggered: boolean;
 }
 
-export const EmergencyStop = ({ onStop, isTriggered }: EmergencyStopProps) => {
+export const EmergencyStop = ({
+  onStop,
+  isTriggered,
+}: EmergencyStopProps) => {
   return (
-    <div className="absolute right-6 bottom-44 flex flex-col items-center justify-center select-none z-30">
+    <div className="absolute right-6 bottom-[156px] z-30 select-none">
       <button
         onClick={onStop}
-        className="relative group focus:outline-none flex items-center justify-center cursor-pointer transition-transform duration-200 active:scale-95"
+        className="cursor-pointer transition-transform duration-150 active:scale-95"
+        aria-label="Emergency Stop"
       >
-        {/* Glowing Pulsing Ring */}
-        <div
-          className={`absolute inset-0 rounded-full blur-xl transition-opacity duration-300 opacity-60 group-hover:opacity-100 ${
-            isTriggered
-              ? "bg-red-600 animate-pulse"
-              : "bg-amber-500/20 group-hover:bg-red-500/40"
-          }`}
-          style={{ width: "96px", height: "96px" }}
-        />
+        <svg
+          className="w-24 h-24"
+          viewBox="0 0 120 120"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <defs>
+            {/* Arcs for EMERGENCY and STOP text paths */}
+            <path
+              id="topArc"
+              d="M 15,60 A 45,45 0 0,1 105,60"
+            />
+            <path
+              id="bottomArc"
+              d="M 105,60 A 45,45 0 0,1 15,60"
+            />
 
-        {/* Industrial Emergency Button Body */}
-        <div className="relative w-24 h-24 rounded-full bg-[#EAB308] border-[3px] border-slate-950 flex flex-col items-center justify-between p-1.5 shadow-xl select-none">
-          {/* Top Label */}
-          <span className="text-[7.5px] font-black text-slate-950 tracking-[0.1em] mt-0.5 select-none leading-none">
-            EMERGENCY
-          </span>
+            {/* Single Arrow segment definition: 100-degree arc with arrowhead */}
+            <g id="arrowSegment">
+              <path
+                d="M -5.47,-15.06 A 16,16 0 0,1 15.75,-2.77"
+                fill="none"
+                stroke="white"
+                strokeWidth="3.5"
+                strokeLinecap="round"
+              />
+              <path
+                d="M 11.5,-5.5 L 16.5,-2 L 18.2,-7"
+                fill="none"
+                stroke="white"
+                strokeWidth="3.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </g>
+          </defs>
 
-          {/* Red Actuator Center Button */}
-          <div
-            className={`w-14 h-14 rounded-full border-[3px] border-slate-950 flex items-center justify-center transition-all duration-300 shadow-inner ${
-              isTriggered
-                ? "bg-red-800 scale-90"
-                : "bg-[#DC2626] group-hover:bg-[#EF4444] hover:shadow-lg"
+          {/* Outer yellow ring */}
+          <circle
+            cx="60"
+            cy="60"
+            r="55"
+            fill="#F4C400"
+          />
+
+          {/* Red center button */}
+          <circle
+            cx="60"
+            cy="60"
+            r="35"
+            fill={isTriggered ? "#B91C1C" : "#D91F26"}
+          />
+
+          {/* EMERGENCY text */}
+          <text
+            fill="#222"
+            fontSize="8"
+            fontWeight="700"
+            letterSpacing="1"
+            fontFamily="Arial, sans-serif"
+          >
+            <textPath
+              href="#topArc"
+              startOffset="50%"
+              textAnchor="middle"
+            >
+              EMERGENCY
+            </textPath>
+          </text>
+
+          {/* STOP text */}
+          <text
+            fill="#222"
+            fontSize="8"
+            fontWeight="700"
+            letterSpacing="1"
+            fontFamily="Arial, sans-serif"
+          >
+            <textPath
+              href="#bottomArc"
+              startOffset="50%"
+              textAnchor="middle"
+            >
+              STOP
+            </textPath>
+          </text>
+
+          {/* 3 Symmetrical Circular repeat arrows looped at 120-degree intervals */}
+          <g
+            transform="translate(60, 60)"
+            className={`transition-transform duration-1000 origin-center ${
+              isTriggered ? "rotate-180" : "hover:rotate-45"
             }`}
           >
-            {/* White Circular Arrows */}
-            <svg
-              className={`w-9 h-9 text-white transition-transform duration-1000 ${
-                isTriggered ? "rotate-180" : "group-hover:rotate-45"
-              }`}
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="3.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67" />
-            </svg>
-          </div>
-
-          {/* Bottom Label */}
-          <span className="text-[8.5px] font-black text-slate-950 tracking-[0.2em] mb-0.5 select-none leading-none">
-            STOP
-          </span>
-        </div>
+            <use href="#arrowSegment" />
+            <use href="#arrowSegment" transform="rotate(120)" />
+            <use href="#arrowSegment" transform="rotate(240)" />
+          </g>
+        </svg>
       </button>
     </div>
   );
