@@ -82,7 +82,13 @@ export const MainViewport = () => {
               {/* Dpad steer output display */}
               {activeDirection && (
                 <div className="absolute bottom-6 right-40 px-3 py-1 bg-slate-950/80 border border-slate-800 rounded-lg text-[9px] font-black text-emerald-400 tracking-wider uppercase animate-pulse">
-                  DRIVE: STEERING {activeDirection}
+                  DRIVE: STEERING {
+                    activeDirection.toLowerCase() === "w" ? "FORWARD" :
+                    activeDirection.toLowerCase() === "s" ? "BACKWARD" :
+                    activeDirection.toLowerCase() === "a" ? "LEFT" :
+                    activeDirection.toLowerCase() === "d" ? "RIGHT" :
+                    activeDirection
+                  }
                 </div>
               )}
             </div>

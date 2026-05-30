@@ -16,16 +16,30 @@ export const DpadController = ({ onDirectionChange }: DpadControllerProps) => {
     const handleKeyDown = (e: KeyboardEvent) => {
       const key = e.key.toLowerCase();
       if (["w", "a", "s", "d"].includes(key)) {
-        setActiveKeys((prev) => ({ ...prev, [key]: true }));
-        if (onDirectionChange) onDirectionChange(key);
+        setActiveKeys((prev) => {
+          if (prev[key]) return prev;
+          const next = { ...prev, [key]: true };
+          if (onDirectionChange) onDirectionChange(key);
+          return next;
+        });
       }
     };
 
     const handleKeyUp = (e: KeyboardEvent) => {
       const key = e.key.toLowerCase();
       if (["w", "a", "s", "d"].includes(key)) {
-        setActiveKeys((prev) => ({ ...prev, [key]: false }));
-        if (onDirectionChange) onDirectionChange(null);
+        setActiveKeys((prev) => {
+          const next = { ...prev, [key]: false };
+          if (onDirectionChange) {
+            const activeDirs = Object.keys(next).filter((k) => next[k]);
+            if (activeDirs.length > 0) {
+              onDirectionChange(activeDirs[activeDirs.length - 1]);
+            } else {
+              onDirectionChange(null);
+            }
+          }
+          return next;
+        });
       }
     };
 

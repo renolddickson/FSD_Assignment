@@ -44,7 +44,7 @@ export const Sidenav = () => {
   ];
 
   return (
-    <aside className="flex flex-col items-center justify-between w-16 h-screen py-6 bg-[#0B101D] border-r border-[#1E293B]/30 select-none z-50">
+    <aside className="flex flex-col items-center justify-between w-16 h-screen py-6 bg-linear-to-b from-[#222f3f] to-[#01060e] border-r border-[#1E293B]/30 select-none z-50">
       {/* Top Section: Logo & Nav items stacked closely */}
       <div className="flex flex-col items-center gap-10 w-full">
         {/* Logo Branding */}
