@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 
 interface PipWindowProps {
   inactiveView: "camera" | "map";
@@ -16,6 +16,34 @@ export const PipWindow = ({
   renderViewContent,
 }: PipWindowProps) => {
   const trackRef = useRef<HTMLDivElement>(null);
+  const zoomRef = useRef(zoom);
+  zoomRef.current = zoom;
+
+  useEffect(() => {
+    const handleWheel = (e: WheelEvent) => {
+      if (e.ctrlKey) {
+        e.preventDefault();
+        const direction = e.deltaY < 0 ? 1 : -1;
+        const step = 0.2;
+        onZoomChange(Math.max(1, Math.min(5, Math.round((zoomRef.current + direction * step) * 10) / 10)));
+      }
+    };
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.ctrlKey && e.key === "0") {
+        e.preventDefault();
+        onZoomChange(1);
+      }
+    };
+
+    window.addEventListener("wheel", handleWheel, { passive: false });
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("wheel", handleWheel);
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [onZoomChange]);
 
   const handleZoomIn = () => {
     onZoomChange(Math.min(5, zoom + 0.5));
