@@ -5,6 +5,7 @@ interface TopbarProps {
   onModeChange: (mode: "auto" | "manual") => void;
   isMissionPaused: boolean;
   onPauseToggle: () => void;
+  disabled?: boolean;
 }
 
 export const Topbar = ({
@@ -12,11 +13,14 @@ export const Topbar = ({
   onModeChange,
   isMissionPaused,
   onPauseToggle,
+  disabled,
 }: TopbarProps) => {
   return (
     <header className="absolute top-0 left-0 right-0 p-6 flex items-start justify-between z-40 pointer-events-none select-none">
       {/* Left: Mission Status Pill */}
-      <div className="flex items-center gap-1.5 p-1 bg-white border border-slate-200/50 rounded-full shadow-lg pointer-events-auto pl-4 pr-1.5">
+      <div className={`flex items-center gap-1.5 p-1 bg-white border border-slate-200/50 rounded-full shadow-lg pointer-events-auto pl-4 pr-1.5 transition-all duration-300 ${
+        disabled ? "opacity-35 pointer-events-none" : ""
+      }`}>
         <div className="flex items-center gap-2">
           <span className="text-[10px] font-black tracking-widest text-slate-400 uppercase">
             Status
@@ -27,6 +31,7 @@ export const Topbar = ({
         </div>
         <button
           onClick={onPauseToggle}
+          disabled={disabled}
           title={isMissionPaused ? "Resume Mission" : "Pause Mission"}
           className="w-7 h-7 bg-[#090D1A] rounded-full flex items-center justify-center text-white cursor-pointer hover:bg-slate-800 active:scale-95 transition-all shadow-md ml-2"
         >
@@ -45,7 +50,9 @@ export const Topbar = ({
       </div>
 
       {/* Right: Mode Selector */}
-      <div className="pointer-events-auto">
+      <div className={`pointer-events-auto transition-all duration-300 ${
+        disabled ? "opacity-35 pointer-events-none" : ""
+      }`}>
         <ModeSelector mode={mode} onModeChange={onModeChange} />
       </div>
     </header>

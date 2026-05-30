@@ -63,13 +63,19 @@ export const MainViewport = () => {
 
               {/* Emergency Stopped Overlay banner */}
               {isEmergencyStopped && (
-                <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 px-8 py-3 bg-red-600/90 backdrop-blur-md border border-red-500 rounded-2xl animate-bounce shadow-2xl flex items-center gap-3">
-                  <span className="relative flex h-3.5 w-3.5">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75"></span>
-                    <span className="relative inline-flex rounded-full h-3.5 w-3.5 bg-white"></span>
-                  </span>
-                  <span className="text-white text-sm font-black tracking-widest uppercase">
-                    EMERGENCY SHUTDOWN TRIGGERED
+                <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 px-8 py-4 bg-slate-950/85 backdrop-blur-md border border-red-500/80 rounded-xl shadow-[0_0_30px_rgba(239,68,68,0.35)] flex flex-col items-center gap-2 select-none min-w-[340px]">
+                  <div className="flex items-center gap-3">
+                    <span className="relative flex h-3 w-3">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-500 opacity-75"></span>
+                      <span className="relative inline-flex rounded-full h-3 w-3 bg-red-500 shadow-[0_0_8px_#EF4444]"></span>
+                    </span>
+                    <span className="text-red-500 text-xs font-black tracking-[0.2em] uppercase leading-none">
+                      EMERGENCY SHUTDOWN
+                    </span>
+                  </div>
+                  <div className="w-full h-[1px] bg-red-500/20 my-1" />
+                  <span className="text-white text-[10px] font-mono tracking-widest uppercase opacity-90 text-center">
+                    ALL ACTUATORS AND MOTORS INHIBITED
                   </span>
                 </div>
               )}
@@ -192,6 +198,7 @@ export const MainViewport = () => {
         onModeChange={setMode}
         isMissionPaused={isMissionPaused}
         onPauseToggle={() => setIsMissionPaused((prev) => !prev)}
+        disabled={isEmergencyStopped}
       />
 
       {/* 1.5. Pressed Top Telemetry Panel */}
@@ -206,6 +213,7 @@ export const MainViewport = () => {
       <QuickActions
         onQuickGoal={() => alert("Quick Goal trigger activated")}
         onInitiate={() => alert("Initiate procedure activated")}
+        disabled={isEmergencyStopped}
       />
 
       {/* 4. Active Background Layer */}
@@ -224,7 +232,10 @@ export const MainViewport = () => {
       <EmergencyStop onStop={handleEmergencyStop} isTriggered={isEmergencyStopped} />
 
       {/* 7. Directional Dpad Steer Panel */}
-      <DpadController onDirectionChange={setActiveDirection} />
+      <DpadController
+        onDirectionChange={setActiveDirection}
+        disabled={mode === "auto" || isEmergencyStopped}
+      />
     </main>
   );
 };

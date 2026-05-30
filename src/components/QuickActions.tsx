@@ -1,15 +1,21 @@
 interface QuickActionsProps {
   onQuickGoal: () => void;
   onInitiate: () => void;
+  disabled?: boolean;
 }
 
-export const QuickActions = ({ onQuickGoal, onInitiate }: QuickActionsProps) => {
+export const QuickActions = ({ onQuickGoal, onInitiate, disabled }: QuickActionsProps) => {
   return (
-    <div className="absolute top-[88px] left-6 right-6 flex items-center justify-between z-30 pointer-events-none select-none">
+    <div className={`absolute top-[88px] left-6 right-6 flex items-center justify-between z-30 pointer-events-none select-none transition-all duration-300 ${
+      disabled ? "opacity-35" : ""
+    }`}>
       {/* Left Quick Goal */}
       <button
         onClick={onQuickGoal}
-        className="pointer-events-auto flex items-center gap-2 p-1 bg-white border border-slate-200/50 rounded-full shadow-lg pl-4 pr-1 hover:shadow-xl active:scale-98 transition-all group cursor-pointer"
+        disabled={disabled}
+        className={`pointer-events-auto flex items-center gap-2 p-1 bg-white border border-slate-200/50 rounded-full shadow-lg pl-4 pr-1 hover:shadow-xl active:scale-98 transition-all group cursor-pointer ${
+          disabled ? "pointer-events-none cursor-not-allowed" : ""
+        }`}
       >
         <span className="text-[10px] font-black tracking-widest text-slate-800 uppercase">
           Quick Goal
@@ -25,7 +31,10 @@ export const QuickActions = ({ onQuickGoal, onInitiate }: QuickActionsProps) => 
       {/* Right Initiate */}
       <button
         onClick={onInitiate}
-        className="pointer-events-auto flex items-center gap-2 p-1 bg-white border border-slate-200/50 rounded-full shadow-lg pl-4 pr-1 hover:shadow-xl active:scale-98 transition-all group cursor-pointer"
+        disabled={disabled}
+        className={`pointer-events-auto flex items-center gap-2 p-1 bg-white border border-slate-200/50 rounded-full shadow-lg pl-4 pr-1 hover:shadow-xl active:scale-98 transition-all group cursor-pointer ${
+          disabled ? "pointer-events-none cursor-not-allowed" : ""
+        }`}
       >
         <span className="text-[10px] font-black tracking-widest text-slate-800 uppercase">
           Initiate

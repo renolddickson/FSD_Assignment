@@ -2,9 +2,10 @@ import { useEffect, useState } from "react";
 
 interface DpadControllerProps {
   onDirectionChange?: (direction: string | null) => void;
+  disabled?: boolean;
 }
 
-export const DpadController = ({ onDirectionChange }: DpadControllerProps) => {
+export const DpadController = ({ onDirectionChange, disabled }: DpadControllerProps) => {
   const [activeKeys, setActiveKeys] = useState<{ [key: string]: boolean }>({
     w: false,
     a: false,
@@ -13,6 +14,12 @@ export const DpadController = ({ onDirectionChange }: DpadControllerProps) => {
   });
 
   useEffect(() => {
+    if (disabled) {
+      setActiveKeys({ w: false, a: false, s: false, d: false });
+      if (onDirectionChange) onDirectionChange(null);
+      return;
+    }
+
     const handleKeyDown = (e: KeyboardEvent) => {
       const key = e.key.toLowerCase();
       if (["w", "a", "s", "d"].includes(key)) {
@@ -50,25 +57,30 @@ export const DpadController = ({ onDirectionChange }: DpadControllerProps) => {
       window.removeEventListener("keydown", handleKeyDown);
       window.removeEventListener("keyup", handleKeyUp);
     };
-  }, [onDirectionChange]);
+  }, [onDirectionChange, disabled]);
 
   const handleMouseDown = (key: string) => {
+    if (disabled) return;
     setActiveKeys((prev) => ({ ...prev, [key]: true }));
     if (onDirectionChange) onDirectionChange(key);
   };
 
   const handleMouseUp = (key: string) => {
+    if (disabled) return;
     setActiveKeys((prev) => ({ ...prev, [key]: false }));
     if (onDirectionChange) onDirectionChange(null);
   };
 
   return (
-    <div className="absolute right-6 bottom-6 select-none z-30 flex items-center justify-center">
+    <div className={`absolute right-6 bottom-6 select-none z-30 flex items-center justify-center transition-all duration-300 ${
+      disabled ? "opacity-35 pointer-events-none cursor-not-allowed" : ""
+    }`}>
       {/* Outer Dark Circular Steer Dial */}
       <div className="relative w-[124px] h-[124px] bg-[#182030] rounded-full shadow-[0_8px_30px_rgb(0,0,0,0.5)] flex items-center justify-center border border-slate-700/30">
         
         {/* Clickable Outer Top Chevron segment */}
         <button
+          disabled={disabled}
           onMouseDown={() => handleMouseDown("w")}
           onMouseUp={() => handleMouseUp("w")}
           onMouseLeave={() => handleMouseUp("w")}
@@ -86,6 +98,7 @@ export const DpadController = ({ onDirectionChange }: DpadControllerProps) => {
 
         {/* Clickable Outer Bottom Chevron segment */}
         <button
+          disabled={disabled}
           onMouseDown={() => handleMouseDown("s")}
           onMouseUp={() => handleMouseUp("s")}
           onMouseLeave={() => handleMouseUp("s")}
@@ -103,6 +116,7 @@ export const DpadController = ({ onDirectionChange }: DpadControllerProps) => {
 
         {/* Clickable Outer Left Chevron segment */}
         <button
+          disabled={disabled}
           onMouseDown={() => handleMouseDown("a")}
           onMouseUp={() => handleMouseUp("a")}
           onMouseLeave={() => handleMouseUp("a")}
@@ -120,6 +134,7 @@ export const DpadController = ({ onDirectionChange }: DpadControllerProps) => {
 
         {/* Clickable Outer Right Chevron segment */}
         <button
+          disabled={disabled}
           onMouseDown={() => handleMouseDown("d")}
           onMouseUp={() => handleMouseUp("d")}
           onMouseLeave={() => handleMouseUp("d")}
