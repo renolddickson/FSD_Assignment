@@ -6,7 +6,7 @@ interface QuickActionsProps {
 
 export const QuickActions = ({ onQuickGoal, onInitiate, disabled }: QuickActionsProps) => {
   return (
-    <div className={`absolute top-[88px] left-6 right-6 flex items-center justify-between z-30 pointer-events-none select-none transition-all duration-300 ${
+    <div className={`absolute top-[200px] md:top-[88px] left-6 right-6 flex items-center justify-between z-30 pointer-events-none select-none transition-all duration-300 ${
       disabled ? "opacity-35" : ""
     }`}>
       {/* Left Quick Goal */}

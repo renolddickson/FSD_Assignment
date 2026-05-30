@@ -6,6 +6,7 @@ interface PipWindowProps {
   zoom: number;
   onZoomChange: (zoom: number) => void;
   renderViewContent: (view: "camera" | "map", isPip: boolean) => React.ReactNode;
+  hideZoomOnMobile?: boolean;
 }
 
 export const PipWindow = ({
@@ -14,6 +15,7 @@ export const PipWindow = ({
   zoom,
   onZoomChange,
   renderViewContent,
+  hideZoomOnMobile = false,
 }: PipWindowProps) => {
   const trackRef = useRef<HTMLDivElement>(null);
   const zoomRef = useRef(zoom);
@@ -96,9 +98,11 @@ export const PipWindow = ({
   };
 
   return (
-    <div className="absolute left-6 bottom-6 flex items-end gap-3 z-30 select-none pointer-events-auto">
+    <div className="absolute left-6 bottom-20 md:bottom-6 flex flex-col-reverse md:flex-row items-start md:items-end gap-3 z-30 select-none pointer-events-auto transition-all duration-300">
       {/* Vertical Zoom Controller */}
-      <div className="flex flex-col items-center gap-2 p-1.5 bg-[#090D1A]/95 backdrop-blur-md border border-slate-800/40 rounded-full shadow-2xl h-44 justify-between">
+      <div className={`flex-col items-center gap-2 p-1.5 bg-[#090D1A]/95 backdrop-blur-md border border-slate-800/40 rounded-full shadow-2xl h-44 justify-between ${
+        hideZoomOnMobile ? "hidden md:flex" : "flex"
+      }`}>
         {/* Zoom In Button */}
         <button
           onClick={handleZoomIn}
@@ -144,21 +148,12 @@ export const PipWindow = ({
       {/* Picture-in-Picture View Container */}
       <div
         onClick={onSwapView}
-        className="relative w-56 h-32 rounded-xl overflow-hidden border border-white/20 shadow-2xl cursor-pointer group hover:scale-[1.03] transition-all duration-300"
+        className="relative w-28 md:w-56 h-18 md:h-32 rounded-lg md:rounded-xl overflow-hidden border border-white/20 shadow-2xl cursor-pointer group hover:scale-[1.03] transition-all duration-300"
       >
         {/* Actual Preview Stream */}
         <div className="w-full h-full pointer-events-none scale-100 group-hover:scale-105 transition-transform duration-500">
           {renderViewContent(inactiveView, true)}
         </div>
-
-        {/* HUD Translucent Overlay Banner (Only when map is in PiP, matching screenshots exactly) */}
-        {inactiveView === "map" && (
-          <div className="absolute inset-0 flex items-center justify-center bg-slate-900/10">
-            <div className="px-4 py-2 rounded-md bg-[#090D1A]/85 border border-slate-700/40 text-[10px] font-semibold text-slate-200 tracking-wide select-none shadow-2xl">
-              Click to enter camera view
-            </div>
-          </div>
-        )}
       </div>
     </div>
   );

@@ -8,7 +8,7 @@ export const EmergencyStop = ({
   isTriggered,
 }: EmergencyStopProps) => {
   return (
-    <div className="absolute right-6 bottom-[156px] z-30 select-none">
+    <div className="absolute right-6 bottom-[220px] md:bottom-[156px] z-30 select-none transition-all duration-300">
       <button
         onClick={onStop}
         className="cursor-pointer transition-transform duration-150 active:scale-95"

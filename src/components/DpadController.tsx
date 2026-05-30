@@ -3,9 +3,10 @@ import { useEffect, useState } from "react";
 interface DpadControllerProps {
   onDirectionChange?: (direction: string | null) => void;
   disabled?: boolean;
+  isInline?: boolean;
 }
 
-export const DpadController = ({ onDirectionChange, disabled }: DpadControllerProps) => {
+export const DpadController = ({ onDirectionChange, disabled, isInline = false }: DpadControllerProps) => {
   const [activeKeys, setActiveKeys] = useState<{ [key: string]: boolean }>({
     w: false,
     a: false,
@@ -72,9 +73,10 @@ export const DpadController = ({ onDirectionChange, disabled }: DpadControllerPr
   };
 
   return (
-    <div className={`absolute right-6 bottom-6 select-none z-30 flex items-center justify-center transition-all duration-300 ${
-      disabled ? "opacity-35 pointer-events-none cursor-not-allowed" : ""
-    }`}>
+    <div className={isInline 
+      ? `relative select-none flex items-center justify-center transition-all duration-300 ${disabled ? "opacity-35 pointer-events-none cursor-not-allowed" : ""}`
+      : `absolute right-6 bottom-20 md:bottom-6 select-none z-30 flex items-center justify-center transition-all duration-300 ${disabled ? "opacity-35 pointer-events-none cursor-not-allowed" : ""}`
+    }>
       {/* Outer Dark Circular Steer Dial */}
       <div className="relative w-[124px] h-[124px] bg-[#182030] rounded-full shadow-[0_8px_30px_rgb(0,0,0,0.5)] flex items-center justify-center border border-slate-700/30">
         

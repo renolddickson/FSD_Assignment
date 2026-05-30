@@ -95,7 +95,7 @@ export const TelemetryPanel = () => {
   const batteryBgClass = isBatteryLow ? "bg-[#EF4444]" : "bg-[#4ADE80]";
 
   return (
-    <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[520px] h-11 bg-[#0A0F1E] border-b border-x border-[#1E293B]/60 rounded-b-[20px] shadow-2xl flex items-center justify-between px-8 select-none z-50">
+    <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[calc(100%-2rem)] max-w-[520px] md:w-[520px] h-11 bg-[#0A0F1E] border-b border-x border-[#1E293B]/60 rounded-b-[20px] shadow-2xl flex items-center justify-between px-4 md:px-8 select-none z-50 transition-all duration-300">
       
       {/* Battery Indicator: dynamic device charge level */}
       <div className="flex items-center gap-2">
@@ -134,9 +134,10 @@ export const TelemetryPanel = () => {
       </div>
 
       {/* Failsafe Check */}
-      <div className="flex items-center gap-1.5">
-        <span className="text-[11px] text-[#8F9CAE] font-medium">Failsafe</span>
-        <span className="text-[11px] text-white font-bold">Okay</span>
+      <div className="flex items-center gap-1">
+        <span className="text-[11px] text-[#8F9CAE] font-medium hidden md:inline">Failsafe</span>
+        <span className="text-[11px] text-[#8F9CAE] font-medium inline md:hidden">FS:</span>
+        <span className="text-[11px] text-white font-bold">OK</span>
         <span className="relative flex h-2 w-2 ml-0.5">
           <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#4ADE80] opacity-75"></span>
           <span className="relative inline-flex rounded-full h-2 w-2 bg-[#4ADE80] shadow-[0_0_8px_#4ADE80]"></span>
@@ -144,9 +145,10 @@ export const TelemetryPanel = () => {
       </div>
 
       {/* System Check */}
-      <div className="flex items-center gap-1.5">
-        <span className="text-[11px] text-[#8F9CAE] font-medium">System</span>
-        <span className="text-[11px] text-white font-bold">Okay</span>
+      <div className="flex items-center gap-1">
+        <span className="text-[11px] text-[#8F9CAE] font-medium hidden md:inline">System</span>
+        <span className="text-[11px] text-[#8F9CAE] font-medium inline md:hidden">SYS:</span>
+        <span className="text-[11px] text-white font-bold">OK</span>
         <span className="relative flex h-2 w-2 ml-0.5">
           <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#4ADE80] opacity-75"></span>
           <span className="relative inline-flex rounded-full h-2 w-2 bg-[#4ADE80] shadow-[0_0_8px_#4ADE80]"></span>
